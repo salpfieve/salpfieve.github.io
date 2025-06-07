@@ -39,15 +39,30 @@
   <div id="app"></div>
 
   <script>
-    if (window.location.search.length > 0) {
-      fetch("salpfieve.html")
-        .then(res => res.text())
-        .then(html => document.getElementById("app").innerHTML = html);
-    } else {
-      fetch("home.html")
-        .then(res => res.text())
-        .then(html => document.getElementById("app").innerHTML = html);
-    }
-  </script>
+      const targetPage =
+        window.location.search.length > 0 ? "salpfieve.html" : "home.html";
+
+      fetch(targetPage)
+        .then((res) => res.text())
+        .then((html) => {
+          document.getElementById("app").innerHTML = html;
+
+          // Eksekusi ulang <script> di dalam konten yang dimuat
+          const scripts = document.querySelectorAll("#app script");
+          scripts.forEach((oldScript) => {
+            const newScript = document.createElement("script");
+
+            // Salin src atau isi script
+            if (oldScript.src) {
+              newScript.src = oldScript.src;
+            } else {
+              newScript.textContent = oldScript.textContent;
+            }
+
+            // Tambahkan ke body agar dijalankan
+            document.body.appendChild(newScript);
+          });
+        });
+    </script>
 </body>
 </html>
