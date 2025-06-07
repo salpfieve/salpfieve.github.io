@@ -88,6 +88,25 @@
 												<div class="post-body post-content">
 													<div class="post-content-header clearfix"></div>
 													<div id="post-body-content">
+														<script>
+  async function loadHomeIfNoQuery() {
+    const contentDiv = document.getElementById('post-body-content');
+    if (!window.location.search) {
+      try {
+        const res = await fetch('home.html');
+        if (res.ok) {
+          contentDiv.innerHTML = await res.text();
+        } else {
+          contentDiv.innerHTML = '<p>Failed to load home.html</p>';
+        }
+      } catch {
+        contentDiv.innerHTML = '<p>Error loading home.html</p>';
+      }
+    }
+    // else biarkan isi index.html seperti semula (tidak diubah)
+  }
+  loadHomeIfNoQuery();
+</script>
 														<p><center>Loading ...</center></p>
 													</div>
 													<div class="post-content-footer clearfix"></div>
